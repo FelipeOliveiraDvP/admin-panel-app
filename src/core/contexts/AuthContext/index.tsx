@@ -3,7 +3,7 @@ import { AuthContextType } from './types';
 import { fakeAuthProvider } from '@/core/helpers/fakeAuthProvider';
 import { isUser } from '@/core/domain/users/users.helpers';
 import { User } from '@/core/domain/users/users.types';
-import { AuthResponse } from '@/core/domain/auth/auth.types';
+import { LoginResponse } from '@/core/domain/auth/auth.types';
 
 const { VITE_USER_KEY, VITE_TOKEN_KEY } = import.meta.env;
 
@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  function login(data: AuthResponse, callback: VoidFunction) {
+  function login(data: LoginResponse, callback: VoidFunction) {
     return fakeAuthProvider.signin(() => {
       localStorage.setItem(VITE_USER_KEY, JSON.stringify(data.user));
       localStorage.setItem(VITE_TOKEN_KEY, JSON.stringify(data.token));

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { Center } from '@mantine/core';
 import { useAuth } from '@/core/contexts/AuthContext';
 
 export function PublicLayout() {
@@ -13,13 +14,8 @@ export function PublicLayout() {
   }, []);
 
   return (
-    <div>
-      <header>
-        <h1>{import.meta.env.VITE_APP_TITLE}</h1>
-      </header>
-      <main>
-        <Outlet />
-      </main>
-    </div>
+    <Center style={{ height: '100%' }}>
+      <Outlet />
+    </Center>
   );
 }
