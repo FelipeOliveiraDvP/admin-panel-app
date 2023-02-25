@@ -13,6 +13,8 @@ import { ForgotPage } from './pages/Forgot';
 import { RecoveryPage } from './pages/Recovery';
 import { DashboardPage } from './pages/Dashboard';
 import { UsersPage } from './pages/Users';
+import { ProfilePage } from './pages/Profile';
+import { NotFoundPage } from './pages/NotFound';
 
 function App() {
   return (
@@ -26,10 +28,13 @@ function App() {
                 <Route path="/" element={<LoginPage />} />
                 <Route path="forgot" element={<ForgotPage />} />
                 <Route path="recovery" element={<RecoveryPage />} />
+                <Route path="*" element={<NotFoundPage />} />
               </Route>
               <Route path="/app" element={<PrivateLayout />}>
                 <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="users" element={<UsersPage />} />
+                <Route path="profile" element={<ProfilePage />} />
+                <Route path="*" element={<NotFoundPage />} />
               </Route>
             </Routes>
           </BrowserRouter>
