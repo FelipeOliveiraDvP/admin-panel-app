@@ -20,7 +20,7 @@ function App() {
   return (
     <>
       <AuthProvider>
-        <MantineProvider withGlobalStyles withNormalizeCSS>
+        <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme: 'dark' }}>
           <GlobalStyles />
           <BrowserRouter>
             <Routes>
