@@ -11,4 +11,11 @@ export interface User extends Timestamps {
   };
 }
 
+export interface UserRequest {
+  name: string;
+  email: string;
+  active: boolean;
+  role: UserRoles;
+}
+
 export type UserRoles = 'ADMIN' | 'MANAGER' | 'USER';

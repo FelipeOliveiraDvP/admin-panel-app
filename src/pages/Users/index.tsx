@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Column } from 'react-table';
 import dayjs from 'dayjs';
 import { ActionIcon, Badge, Button, Group, Text } from '@mantine/core';
@@ -8,8 +8,14 @@ import { Table } from '@/components/_commons/Table';
 import { Page } from '@/components/_commons/Page';
 import { UsersFilters } from '@/components/users/FIlters';
 import { User } from '@/core/domain/users/users.types';
+import { UsersFormModal } from '@/components/users/ModalForm';
+import { RemoveModal } from '@/components/_commons/RemoveModal';
 
 export function UsersPage() {
+  const [selectedUser, setSelectedUser] = useState<User>();
+  const [showSaveModal, setShowSaveModal] = useState<boolean>(false);
+  const [showRemoveModal, setShowRemoveModal] = useState<boolean>(false);
+
   const data = React.useMemo<User[]>(
     () => [
       {
@@ -76,12 +82,12 @@ export function UsersPage() {
       {
         Header: () => <Text align="right">Ações</Text>,
         accessor: 'id',
-        Cell: () => (
+        Cell: (cell) => (
           <Group position="right" miw={100}>
-            <ActionIcon variant="outline">
+            <ActionIcon variant="outline" onClick={() => toggleSaveModal(cell.row.original)}>
               <IconEdit size={18} />
             </ActionIcon>
-            <ActionIcon variant="outline" color="red">
+            <ActionIcon variant="outline" color="red" onClick={() => toggleRemoveModal(cell.row.original)}>
               <IconTrash size={18} />
             </ActionIcon>
           </Group>
@@ -91,9 +97,45 @@ export function UsersPage() {
     [],
   );
 
+  async function handleRemoveUser(user?: User) {
+    console.log('Remove user', user);
+    toggleRemoveModal();
+  }
+
+  function toggleSaveModal(user?: User) {
+    setSelectedUser(user);
+    setShowSaveModal(!showSaveModal);
+  }
+
+  function toggleRemoveModal(user?: User) {
+    setSelectedUser(user);
+    setShowRemoveModal(!showRemoveModal);
+  }
+
   return (
     <Page title="Usuários">
-      <Table columns={columns} data={data} filters={<UsersFilters />} extra={<Button>Novo usuário</Button>} />
+      <Table
+        columns={columns}
+        data={data}
+        filters={<UsersFilters />}
+        extra={<Button onClick={() => toggleSaveModal()}>Novo usuário</Button>}
+      />
+
+      <UsersFormModal
+        open={showSaveModal}
+        user={selectedUser}
+        onClose={toggleSaveModal}
+        onSuccess={() => console.log('Refresh users table')}
+      />
+
+      <RemoveModal
+        open={showRemoveModal}
+        title="Remover usuário"
+        onCancel={toggleRemoveModal}
+        onRemove={() => handleRemoveUser(selectedUser)}
+      >
+        {`Deseja realmente remover o usuário "${selectedUser?.name}"?`}
+      </RemoveModal>
     </Page>
   );
 }
